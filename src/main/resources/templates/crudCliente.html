@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset= "utf-8">
+<title>Registro de Clientes</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<body>
+	<div align="center" th:if="${mensaje != null}" class="alert alert-danger">
+		<p th:text="${mensaje}"></p>
+	</div><br/>
+	<div align="center">
+		<h2 align="center">Registro de Clientes</h2><br/>
+		<img src="/imagenes/cliente.png" style="height: 250px;width: 250px;border-radius: 25%;">
+	</div><br/>
+	<div class="container">
+		<form th:action="@{/grabarCliente}" th:object="${cliente}" method="post">
+			<div class="row">
+				<div class="col-md-6">
+				<label for="inputNomCliente">Nombre/Razon</label>
+				<input th:field="*{nomCliente}" class="form-control" id="inputNomCliente" th:value="${cliente.nomCliente}" required>
+				</div>
+				<div class="col-md-6">
+					<label for="inputDocCliente">DNI/RUC</label>
+					<input th:field="*{docCliente}" class="form-control" id="inputDocCliente" th:value="${cliente.docCliente}" required>
+					<p th:if="${#fields.hasErrors('docCliente')}" th:errors="*{docCliente}" class="error-message"></p>
+				</div>
+			</div>
+			<div class="form-group col-md-6">
+					<label for="inputDirCliente">Dirección</label>
+					<input th:field="*{dirCliente}" class="form-control" id="inputDirCliente" th:value="${cliente.dirCliente}" required>
+			</div>
+			<div class="row">
+				<div class="col-md-6">
+					<label for="inputTelefono">Teléfono</label>
+					<input th:field="*{telCliente}" class="form-control" id="inputTelefono" th:value="${cliente.telCliente}" required>
+				</div>
+			</div>
+			<div class="form-group col-md-4">
+					<label for="inputTipo">Tipo de Cliente</label>
+					<select id="inputTipo" class="form-control" th:field="*{tipocliente.idTipoCliente}">
+						<option th:value="-1" th:text="Seleccione"></option>
+						<option th:each="t:${lstTipoClientes}"
+								th:value="${t.idTipoCliente}"
+								th:text="${t.desTipoCliente}">
+						</option>
+					</select>
+			</div><br/>
+				<button type="submit" class="btn btn-primary">Registrar</button>
+				<a href="/listarCliente" class="btn btn-primary">Listar</a>
+		</form>
+		</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    var errorField = /*[[${errorField}]]*/ 'docCliente';
+    var inputField = document.getElementById('input' + errorField.charAt(0).toUpperCase() + errorField.slice(1));
+    
+    inputField.focus();
+    
+    inputField.value = '';
+</script>
+</body>
+</html>
